@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-build_split.py — Build subject-independent dataset splits and temporal crop manifest.
+01_build_split.py — Build subject-independent dataset splits and temporal crop manifest.
 
-Reads manifest.csv (written by extract_waveforms.py), assigns celebrity
+Reads manifest.csv (written by 00_extract_waveforms.py), assigns celebrity
 identities by parsing the id[0-9]+ prefix from video_id, and partitions the 59
 identities into 41 train / 9 val / 9 test with zero overlap.
 
@@ -10,8 +10,8 @@ Also generates temporal_crops_manifest.csv: for each training real video,
 extracts multiple 160-frame window indices at stride s=60 for class balancing.
 
 Usage:
-    python3 build_split.py --data-root ~/data
-    python3 build_split.py --data-root ~/data --seed 42 --stride 60
+    python3 scripts/01_build_split.py --data-root data
+    python3 scripts/01_build_split.py --data-root data --seed 42 --stride 60
 """
 
 import argparse

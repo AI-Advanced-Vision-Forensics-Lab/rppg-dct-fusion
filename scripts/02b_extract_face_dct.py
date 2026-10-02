@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-extract_dct_fullface.py — Full-face DCT features aligned with stride-60 rPPG windows.
+02b_extract_face_dct.py — Full-face DCT features aligned with stride-60 rPPG windows.
 
-Identical pipeline to extract_dct_features.py, except the bounding box covers
+Identical pipeline to 02_extract_lip_dct.py, except the bounding box covers
 ALL 468 face landmarks instead of only lip indices. Tests whether synthesis
 artifacts are detectable outside the mouth region.
 

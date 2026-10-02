@@ -1,13 +1,13 @@
 """
 common.py — Shared utilities, model definitions, and data loaders
-for ICASSP paper reruns.  All models here are exact copies from the
+for this paper's reruns.  All models here are exact copies from the
 original scripts (no modifications to architectures or HPs).
 
 Original sources:
   ResNet1D     → src/run_per_method_isolated_rebaseline.py / per_method_full_experiments.py
-  LinearRPPG   → src/run_fusion_experiments.py (FusionMLP.rppg_enc, no fusion head)
-  DctMLP       → src/run_dct_only.py / run_fusion_experiments.py
-  FusionMLP    → src/run_fusion_experiments.py
+  LinearRPPG   → table1_concat_fusion.py (FusionMLP.rppg_enc, no fusion head)
+  DctMLP       → table1_dct_only.py / table1_concat_fusion.py
+  FusionMLP    → table1_concat_fusion.py
   ResNetFusion → new (R5) — ResNet trunk + DCT branch, same fusion head as FusionMLP
 """
 
@@ -26,7 +26,7 @@ from torch.utils.data import DataLoader, TensorDataset
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 import argparse as _argparse
-_ap = _argparse.ArgumentParser(description="Paper 2 rerun (see README)")
+_ap = _argparse.ArgumentParser(description="rerun for this paper (see README)")
 _ap.add_argument("--data-root", default="data",
                  help="data folder laid out as described in the README (default: ./data)")
 _ap.add_argument("--out-dir", default=None,
@@ -93,7 +93,7 @@ class ResNet1D(nn.Module):
 
 class LinearRPPG(nn.Module):
     """10,432-param linear rPPG encoder (FusionMLP rppg_enc branch, standalone).
-    Matches src/run_fusion_experiments.py FusionMLP.rppg_enc exactly."""
+    Matches table1_concat_fusion.py FusionMLP.rppg_enc exactly."""
     def __init__(self, dropout=0.3):
         super().__init__()
         self.enc = nn.Sequential(
@@ -110,7 +110,7 @@ class LinearRPPG(nn.Module):
 
 class DctMLP(nn.Module):
     """4,353-param DCT-only MLP.
-    Matches src/run_dct_only.py exactly."""
+    Matches table1_dct_only.py exactly."""
     def __init__(self, dropout=0.3):
         super().__init__()
         self.net = nn.Sequential(
@@ -123,7 +123,7 @@ class DctMLP(nn.Module):
 
 class FusionMLP(nn.Module):
     """23,041-param concat-fusion MLP.
-    Matches src/run_fusion_experiments.py FusionMLP exactly."""
+    Matches table1_concat_fusion.py FusionMLP exactly."""
     def __init__(self, dropout=0.3):
         super().__init__()
         self.rppg_enc = nn.Sequential(

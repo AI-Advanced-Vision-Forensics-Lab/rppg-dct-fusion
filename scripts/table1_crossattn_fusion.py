@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-run_crossattn_experiments.py — Cross-attention fusion: rPPG waveform + DCT lip features.
+table1_crossattn_fusion.py — Cross-attention fusion: rPPG waveform + DCT lip features.
 
 rPPG tokens attend to DCT tokens, letting the model selectively draw on
 lip texture only where it's informative (hypothesis: recovers SadTalker
 regression while maintaining IP-LAP improvement).
 
-Protocol: identical to run_fusion_experiments.py
+Protocol: identical to table1_concat_fusion.py
   - Per-method isolated training (real + that method's fakes)
   - 5 seeds, 30 epochs, AdamW lr=1e-3 wd=5e-4, batch=64, weighted BCE
   - 18-identity eval (val+test), mean ± std AUC

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-extract_dct_features.py — Lip-region DCT features aligned with stride-60 rPPG windows.
+02_extract_lip_dct.py — Lip-region DCT features aligned with stride-60 rPPG windows.
 
 For each entry in dataset_split.csv:
   - Locate source video and seek to the middle frame of that window

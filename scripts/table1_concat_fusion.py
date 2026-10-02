@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-run_fusion_experiments.py — Concatenation fusion: rPPG waveform + DCT lip features.
+table1_concat_fusion.py — Concatenation fusion: rPPG waveform + DCT lip features.
 
 Smoke run: does DCT add signal over rPPG alone? Especially on IP-LAP?
 
-Protocol (matches Paper 1 per-method isolated experiment):
+Protocol (matches the companion paper's per-method isolated experiment):
   - Per-method training: real_train + method_fakes_train
   - Eval: real_val+test + method_fakes_val+test (18 identities)
   - 5 seeds, mean ± std AUC
@@ -41,7 +41,7 @@ METHODS = [
     "IP_LAP", "Real3DPortrait", "SadTalker",
 ]
 
-# Paper 1 per-method 1D ResNet AUC (5-seed mean, per-method isolated training)
+# Companion paper (earlier corpus version): per-method 1D ResNet AUC (5-seed mean, per-method isolated training)
 RPPG_ONLY = {
     "AniTalker":      (0.9078, 0.0034),
     "EchoMimic":      (0.8653, 0.0028),

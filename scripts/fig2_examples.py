@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-make_fig2_grid.py — Figure 2 for Paper 2.
+fig2_examples.py — Figure 2 of this paper.
 
 3×2 grid. Rows: Real, IP-LAP, SadTalker (all identity id48).
 Col 1: z-scored rPPG waveform (160 samples). Col 2: lip-region DCT
@@ -11,7 +11,7 @@ Clip selection: closest to per-method median DCT L2-norm.
   IP-LAP:    IP_LAP__id48_0005_test_id01460_t0i-doPmN9c  (dist=15.71)
   SadTalker: SadTalker__id48_0001_test_id01509_asrGhE2enzQ (dist=12.01)
 
-ICASSP constraints: pdf.fonttype=42, ps.fonttype=42, grayscale only,
+Venue style constraints: pdf.fonttype=42, ps.fonttype=42, grayscale only,
 bbox_inches='tight', pad_inches=0.02, no figure title.
 """
 

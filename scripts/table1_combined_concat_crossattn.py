@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-run_full_training_comparison.py — Train on all 7 methods combined, eval per method.
+table1_combined_concat_crossattn.py — Train on all 7 methods combined, eval per method.
 
 Contrast with per-method isolated training to see if a unified model generalises
 better or worse than specialised models.
 
 Architectures:
-  1. rPPG-only 1D ResNet — hardcoded from Paper 1 eval18.json (not re-run)
+  1. rPPG-only 1D ResNet — hardcoded from the companion paper's eval18.json (earlier corpus version) (not re-run)
   2. ConcatFusionMLP     — trained fresh
   3. CrossAttnFusion     — trained fresh
 
@@ -42,7 +42,7 @@ METHODS = [
 
 # ── Hardcoded baselines ────────────────────────────────────────────────────────
 
-# Paper 1 — 1D ResNet, per-method isolated training, 5 seeds
+# Companion paper (earlier corpus version) — 1D ResNet, per-method isolated training, 5 seeds
 RPPG_ONLY = {
     "AniTalker":      (0.9078, 0.0034),
     "EchoMimic":      (0.8653, 0.0028),

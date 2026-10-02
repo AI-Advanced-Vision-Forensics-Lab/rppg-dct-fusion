@@ -64,7 +64,7 @@ data/
     └── fake/<method>__<stem>.npy
 ```
 
-The `scripts/reruns/` scripts read the same waveforms with the companion repository's file layout. Create symlinks once after extraction:
+The `scripts/reruns/` scripts read the same waveforms with the companion repository's file layout. Create symlinks once after extraction and the DCT filtering step (see "Samples without DCT features" below):
 
 ```bash
 cd data/waveforms
@@ -77,6 +77,8 @@ done
 
 In our runs the two layouts held byte-identical files.
 
+**Samples without DCT features.** Lip-DCT extraction finds no face in 64 real windows (from 32 source videos, 9 of which lose every window) and in 3 EchoMimic videos. In our runs these waveforms were removed before the final split was built, so every model, including the rPPG-only ones, uses the same 2,371 real windows from 579 videos. `00_extract_waveforms.py` produces 2,435 real windows from 588 videos (2 of the 590 yield no waveform). After `02_extract_lip_dct.py`, run `python scripts/01a_filter_no_dct.py` (a dry run that prints the counts), then the same command with `--apply` to move those waveforms to `waveforms/excluded/`, and re-run `01_build_split.py`, which keeps only waveforms present on disk. The 3 EchoMimic videos are only present if you copied all 2,500 sampled videos of that method; `corpus_17497.csv` already omits them. Without this step the `scripts/reruns/` models include these windows with an all-zero DCT vector.
+
 ## Identity split
 
 `splits/identity_split.csv` assigns each of the 59 identities to `train` (41), `val` (9) or `test` (9). Results are reported on the 18 validation + test identities combined: 696 real windows and 5,553 fake videos. `01_build_split.py` writes `data/dataset_split.csv`, which every training script reads.
@@ -85,11 +87,14 @@ In our runs the two layouts held byte-identical files.
 
 All runs use 5 seeds {42, 7, 123, 999, 2024}, AdamW (lr 1e-3, wd 5e-4), batch 64 and 30 epochs. The shipped JSON is the file each number was read from.
 
+**Hyperparameters.** The fusion and DCT models were not tuned. All models use the 1D ResNet settings from the companion repository (AdamW, lr 1e-3, wd 5e-4) with dropout 0.3; the 1D ResNet keeps dropout 0.5. No hyperparameter search was run for this paper.
+
 | Paper item | Command | Shipped JSON |
 |---|---|---|
 | rPPG waveforms (Sec. 3.1) | `python scripts/00_extract_waveforms.py --repo-dir RhythmFormer` | — |
 | Split | `python scripts/01_build_split.py` | — |
 | Lip DCT features (Sec. 3.2) | `python scripts/02_extract_lip_dct.py` | — |
+| Drop samples without DCT (64 real windows, 3 fakes) | `python scripts/01a_filter_no_dct.py --apply`, then `python scripts/01_build_split.py` again | — |
 | Table 1, rPPG (1D ResNet) + Combined | `python scripts/reruns/run_r1_r2.py` | `results/reruns/r1_r2_rppg_resnet/r1_results.json`, `r2_results.json` |
 | Table 1, rPPG-linear + Combined | `python scripts/reruns/run_r4_linear_rppg.py` | `results/reruns/r4_linear_rppg/r4_iso_results.json`, `r4_comb_results.json` |
 | Table 1, DCT + Combined | `python scripts/table1_dct_only.py` | `results/6_29_2026/dct_only_experiments.json` |
@@ -111,9 +116,13 @@ In the result files, `Overall` (or the `r2` / `comb` files) is the **Combined** 
 
 - **Oracle average (Sec. 4.2, 0.818).** This is the unweighted mean over held-out methods of max(rPPG, DCT) in `results/reruns/r3_lomo/results.json`, which gives 0.8176. It is computed from that file and not stored separately.
 - **Fig. 3** is drawn only from shipped results. It reads `r1_results.json` (rPPG), `dct_only_experiments.json` (DCT), `fusion_experiments.json` (Concat) and `r3_lomo/results.json` (LOGO), and needs no data or GPU.
-- **Fig. 2** needs pre-extracted face frames under `data/frames/celeb/{Celeb-real,TalkingFace/<method>}/`: 10 uniformly sampled, 299×299 BlazeFace crops per video. The frame-extraction step is not part of this repository. The DCT maps are recomputed from those frames, and the clips used are listed in the script header.
+- **Two sets of runs.** The DCT, Gated, Concat and Cross-attention columns of Table 1 and all of Table 3 come from the `table1_*.py` runs of June 29–30. The rPPG, rPPG-linear and Concat-ResNet columns and all of Table 2 come from the later `scripts/reruns/` runs. Both use the same split and corpus (1,675 / 11,944 training samples; 696 / 5,553 eval samples).
+- **DCT normalisation.** DCT features are standardised per coefficient (scikit-learn `StandardScaler`, fit on the training split of each run) before entering the DCT and fusion models.
+- **Reference constants.** Some `table1_*.py` scripts print a comparison against hardcoded 1D ResNet numbers from an earlier version of the companion paper. These are printed only and are not the Table 1 rPPG column, which comes from `run_r1_r2.py`.
+- **Frame rates (Sec. 5.2).** The frame-rate figures come from the metadata check in the companion repository (`task3_method_label_validation.json`).
+- **Fig. 2** needs pre-extracted face frames under `data/frames/celeb/{Celeb-real,TalkingFace/<method>}/`. The frame-extraction step is not included. The frames it read were 10 uniformly spaced, 299×299 BlazeFace crops (1.5× box) per video. The DCT maps are recomputed from those frames, and the clips used are listed in the script header.
 - **Fig. 1** (pipeline diagram) is not included because it contains a frame from the dataset.
-- **Path edits only.** Relative to the code that produced the results, the scripts were changed only to make paths configurable and to rename files. `fig3_per_method_auc.py` is new and only plots. The training and extraction scripts were not re-run end to end after these edits. They were checked statically: they compile, `--help` works, and referenced paths exist.
+- **Path edits only.** Relative to the code that produced the results, the scripts were changed only to make paths configurable, to rename files, and to reword comments and docstrings. `fig3_per_method_auc.py` is new and only plots. `01a_filter_no_dct.py` is new and replaces the manual move of the samples without DCT features; a dry run on our data identifies exactly the 64 + 3 waveforms excluded in our runs. The training and extraction scripts were not re-run end to end after these edits. They were checked statically: they compile, `--help` works, and referenced paths exist.
 
 ## Citation
 

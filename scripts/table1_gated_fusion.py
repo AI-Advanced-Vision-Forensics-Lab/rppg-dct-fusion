@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-run_gated_fusion.py — Learned scalar gate: α·h_rppg + (1−α)·h_dct.
+table1_gated_fusion.py — Learned scalar gate: α·h_rppg + (1−α)·h_dct.
 
 Gate hypothesis: the model should learn high α (rely on rPPG) for SadTalker
 where DCT adds noise, and low/mid α (rely more on DCT) for IP_LAP where DCT
 adds the most signal.
 
-Protocol: identical to run_fusion_experiments.py
+Protocol: identical to table1_concat_fusion.py
   - Per-method isolated training (real + that method's fakes)
   - 5 seeds, 30 epochs, AdamW lr=1e-3 wd=5e-4, batch=64, weighted BCE
   - 18-identity eval (val+test), mean ± std AUC

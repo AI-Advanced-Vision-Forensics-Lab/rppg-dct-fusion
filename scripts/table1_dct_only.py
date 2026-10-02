@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-run_dct_only.py — DCT-only ablation (no rPPG input).
+table1_dct_only.py — DCT-only ablation (no rPPG input).
 
-Same protocol as run_fusion_experiments.py:
+Same protocol as table1_concat_fusion.py:
   - Per-method isolated training (real + that method's fakes)
   - 5 seeds, 30 epochs, AdamW lr=1e-3 wd=5e-4, batch=64, weighted BCE
   - 18-identity eval (val+test), mean ± std AUC
@@ -36,7 +36,7 @@ METHODS = [
     "IP_LAP", "Real3DPortrait", "SadTalker",
 ]
 
-# Paper 1 — per-method 1D ResNet, 5 seeds
+# Companion paper (earlier corpus version) — per-method 1D ResNet, 5 seeds
 RPPG_ONLY = {
     "AniTalker":      (0.9078, 0.0034),
     "EchoMimic":      (0.8653, 0.0028),

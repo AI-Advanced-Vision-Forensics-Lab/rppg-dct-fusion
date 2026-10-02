@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-extract_waveforms.py — Batch rPPG waveform extraction using RhythmFormer.
+00_extract_waveforms.py — Batch rPPG waveform extraction using RhythmFormer.
 
 Walks videos/real/ and videos/fake/ (handles flat or per-method subdirectory
 layouts), extracts a 160-sample rPPG waveform per video, and saves each as a
@@ -10,8 +10,8 @@ Fully resumable: already-extracted videos are skipped.
 Writes a manifest.csv tracking status of every video.
 
 Usage:
-    python3 extract_waveforms.py --data-root ~/data
-    python3 extract_waveforms.py --data-root ~/data --workers 4
+    python3 scripts/00_extract_waveforms.py --data-root data
+    python3 scripts/00_extract_waveforms.py --data-root data --workers 4
 """
 
 import argparse
