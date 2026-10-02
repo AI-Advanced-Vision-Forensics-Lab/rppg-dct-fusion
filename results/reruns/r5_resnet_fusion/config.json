@@ -1,0 +1,30 @@
+{
+  "model_name": "ResNetFusion",
+  "model_kwargs": {
+    "dropout": 0.3
+  },
+  "corpus": "FINAL (dataset_split.csv)",
+  "split_file": "data/dataset_split.csv",
+  "eval_set": "val+test (18 identities)",
+  "n_eval_real": 696,
+  "n_train_real": 1675,
+  "seeds": [
+    42,
+    7,
+    123,
+    999,
+    2024
+  ],
+  "lr": 0.001,
+  "wd": 0.0005,
+  "epochs": 30,
+  "batch": 64,
+  "weighted_bce": true,
+  "window_level_auc": true,
+  "git_commit": "NO_GIT_REPO",
+  "device": "cuda",
+  "run_id": "R5",
+  "arch": "ResNet1D trunk (128-dim GAP) + DCT MLP (64-dim) \u2192 fusion Linear(192,64) \u2192 Linear(64,1)",
+  "model_params": 256737,
+  "note": "Architecturally consistent fusion: same ResNet rPPG backbone in both standalone (R1) and fusion (R5) settings."
+}

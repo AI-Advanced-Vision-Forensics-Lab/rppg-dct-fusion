@@ -1,0 +1,52 @@
+{
+  "model_name": "LOMO-identity-split",
+  "model_kwargs": {
+    "rPPG": "ResNet1D(dropout=0.5)",
+    "DCT": "DctMLP(dropout=0.3)",
+    "Concat": "FusionMLP(dropout=0.3)"
+  },
+  "corpus": "FINAL (dataset_split.csv)",
+  "split_file": "data/dataset_split.csv",
+  "eval_set": "val+test (18 identities)",
+  "n_eval_real": 696,
+  "n_train_real": 1675,
+  "seeds": [
+    42,
+    7,
+    123,
+    999,
+    2024
+  ],
+  "lr": 0.001,
+  "wd": 0.0005,
+  "epochs": 30,
+  "batch": 64,
+  "weighted_bce": true,
+  "window_level_auc": true,
+  "git_commit": "NO_GIT_REPO",
+  "device": "cuda",
+  "run_id": "R3",
+  "protocol": "LOMO (7 TF methods), identity-disjoint real split",
+  "eval_identities": [
+    "id0",
+    "id11",
+    "id12",
+    "id13",
+    "id16",
+    "id19",
+    "id22",
+    "id23",
+    "id27",
+    "id34",
+    "id4",
+    "id42",
+    "id44",
+    "id52",
+    "id54",
+    "id56",
+    "id6",
+    "id8"
+  ],
+  "train_identity_count": 41,
+  "note": "Replaces Table II. Real class NOW identity-disjoint (train vs eval)."
+}
